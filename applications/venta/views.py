@@ -1,6 +1,6 @@
 from itertools import count, product
 from django.shortcuts import render
-
+from django.utils import timezone
 from rest_framework.generics import (
     ListAPIView,
     CreateAPIView
@@ -37,7 +37,7 @@ class RegistrarVenta(CreateAPIView):
         #validar el serializador
         serializer = ProcesoVentaSerializer(data=request.data)
 
-        serializer.is_valid(raise_exceptions=True)
+        serializer.is_valid(raise_exception=True)
 
         venta = Sale.objects.create(
             date_sale=timezone.now(),
@@ -91,7 +91,7 @@ class RegistrarVenta2(CreateAPIView):
         #validar el serializador
         serializer = ProcesoVentaSerializer2(data=request.data)
 
-        serializer.is_valid(raise_exceptions=True)
+        serializer.is_valid(raise_exception=True)
 
         venta = Sale.objects.create(
             date_sale=timezone.now(),
