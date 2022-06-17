@@ -28,12 +28,41 @@ class ListProductUser(ListAPIView):
 class ListProductoStok(ListAPIView):
 
     serializer_class = ProductSerializer
+    # verifica que el token pertenezca a un usuario
     authentication_classes = (TokenAuthentication,)
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        usuario = self.request.user #recuperar el usuario
-        print(usuario)
+        #recuperar el usuario
+       #usuario = self.request.user 
+        #print(usuario)
+        return Product.objects.productos_con_stok()
 
 
-        return Product.objects.productos_por_user(usuario)
+class ListProductoGenero(ListAPIView):
+
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        #recuperaar para clave o parametro     
+        genero = self.kwargs['gender']
+        return Product.objects.productos_por_genero('genero')
+
+
+class FilterProductos(ListAPIView):  #video 158 error
+
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        varon = self.request.query_params.get('man', None)
+        mujer = self.request.query_params.get('woman', None)
+        nombre = self.request.query_params.get('name', None)
+        #
+
+        return  Product.objects.filtrar_productos(
+            man=self.request.query_params.get('man', None),
+            woman = self.request.query_params.get('woman', None),
+            name = self.request.query_params.get('name', None)
+        )
+
+        
